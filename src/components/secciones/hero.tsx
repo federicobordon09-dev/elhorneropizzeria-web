@@ -67,9 +67,9 @@ export function Hero() {
             className="mt-8 flex flex-col items-center gap-3 sm:flex-row lg:justify-start"
           >
             <Button
-              render={<a href="#menu" />}
               size="lg"
               className="resplandor-brasa h-12 w-full cursor-pointer px-7 text-base sm:w-auto"
+              onClick={() => document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" })}
             >
               <UtensilsCrossed className="size-5" />
               Ver Menú
