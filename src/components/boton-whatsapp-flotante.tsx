@@ -25,7 +25,7 @@ export function BotonWhatsAppFlotante() {
           exit={{ opacity: 0, scale: 0.5, y: 20 }}
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.95 }}
-          className="parpadeo-whatsapp fixed bottom-6 right-6 z-50 flex size-14 items-center justify-center rounded-full bg-[#25D366] shadow-lg shadow-[#25D366]/40"
+          className="parpadeo-whatsapp fixed right-4 bottom-4 z-50 flex size-14 items-center justify-center rounded-full bg-[#25D366] shadow-lg shadow-[#25D366]/40 max-sm:right-4 max-sm:bottom-4"
         >
           {/* Pulso animado */}
           <span className="absolute inset-0 animate-ping rounded-full bg-[#25D366] opacity-40" />

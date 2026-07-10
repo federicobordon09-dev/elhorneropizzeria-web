@@ -15,10 +15,13 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
   const [posicion, setPosicion] = useState({ x: 0, y: 0 });
   const [arrastrando, setArrastrando] = useState(false);
   const ultimoPunto = useRef({ x: 0, y: 0 });
-  const ultimaDistanciaPellizco = useRef(0);
+  const distanciaInicialPellizco = useRef(0);
+  const escalaInicialPellizco = useRef(1);
   const seMovio = useRef(false);
   const contenedorRef = useRef<HTMLDivElement>(null);
   const imagenRef = useRef<HTMLDivElement>(null);
+
+  const ZOOM_MAX = 4;
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -75,7 +78,8 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
     if (e.touches.length === 2) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
-      ultimaDistanciaPellizco.current = Math.sqrt(dx * dx + dy * dy);
+      distanciaInicialPellizco.current = Math.sqrt(dx * dx + dy * dy);
+      escalaInicialPellizco.current = escala;
     } else if (e.touches.length === 1 && escala > 1) {
       ultimoPunto.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
       setArrastrando(true);
@@ -87,8 +91,9 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
       const distancia = Math.sqrt(dx * dx + dy * dy);
-      if (ultimaDistanciaPellizco.current > 0) {
-        setEscala((s) => Math.max(1, Math.min(6, s * (distancia / ultimaDistanciaPellizco.current))));
+      if (distanciaInicialPellizco.current > 0) {
+        const nuevaEscala = escalaInicialPellizco.current * (distancia / distanciaInicialPellizco.current);
+        setEscala(Math.max(1, Math.min(ZOOM_MAX, nuevaEscala)));
         seMovio.current = true;
       }
     } else if (arrastrando && escala > 1 && e.touches.length === 1) {
@@ -102,7 +107,7 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
 
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
     setArrastrando(false);
-    ultimaDistanciaPellizco.current = 0;
+    distanciaInicialPellizco.current = 0;
     if (!seMovio.current && e.changedTouches.length === 1) {
       toggleZoom();
     }

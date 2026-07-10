@@ -121,6 +121,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-kerning: normal;
+  overflow-x: hidden;
 }
 
 /* Textura de fondo sutil (noise SVG sobre toda la página) */
