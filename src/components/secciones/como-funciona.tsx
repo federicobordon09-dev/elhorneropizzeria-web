@@ -10,12 +10,9 @@ export function ComoFunciona() {
         <div className="absolute left-1/2 top-1/2 h-72 w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-[130px]" />
       </div>
 
-      {/* Línea conectora punteada entre pasos */}
+      {/* Línea conectora punteada horizontal entre pasos (solo escritorio) */}
       <div className="pointer-events-none absolute inset-0 -z-10 hidden items-center justify-center lg:flex">
         <div className="h-px w-[calc(100%-12rem)] max-w-[56rem] border-t border-dashed border-ambar/20" />
-      </div>
-      <div className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center lg:hidden">
-        <div className="h-[calc(100%-8rem)] w-px border-l border-dashed border-ambar/15" />
       </div>
 
       <div className="mx-auto max-w-6xl px-5">

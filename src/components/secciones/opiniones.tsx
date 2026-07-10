@@ -9,7 +9,7 @@ export function Opiniones() {
   const lista = [...opiniones, ...opiniones];
 
   return (
-    <section id="opiniones" className="seccion seccion-alt relative">
+    <section id="opiniones" className="seccion seccion-alt relative overflow-x-hidden">
       <div className="mx-auto max-w-6xl px-5">
         <EncabezadoSeccion
           titulo="Lo que dicen nuestros clientes"
@@ -18,9 +18,9 @@ export function Opiniones() {
       </div>
 
       {/* Ticker infinito: sigue girando aunque el mouse pase por arriba */}
-      <div className="relative mt-10 overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+      <div className="relative mt-10 isolate overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
         <motion.div
-          className="flex w-max gap-5 px-5"
+          className="flex w-max gap-5 px-5 [transform:translateZ(0)] [will-change:transform] [backface-visibility:hidden]"
           animate={{ x: "-50%" }}
           transition={{ duration: 40, ease: "linear", repeat: Infinity }}
         >
