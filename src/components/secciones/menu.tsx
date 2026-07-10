@@ -64,17 +64,13 @@ export function Menu() {
 
         <div className="mt-12 text-center">
           <Button
-            render={
-              <a
-                href={enlaceWhatsApp(
-                  "¡Hola El Hornero! Quería consultar la carta y hacer un pedido 🍕"
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-              />
-            }
             size="lg"
             className="resplandor-brasa h-12 cursor-pointer px-8 text-base"
+            onClick={() => window.open(
+              enlaceWhatsApp("¡Hola El Hornero! Quería consultar la carta y hacer un pedido 🍕"),
+              '_blank',
+              'noopener,noreferrer'
+            )}
           >
             <MessageCircle className="size-5" />
             Pedir por WhatsApp

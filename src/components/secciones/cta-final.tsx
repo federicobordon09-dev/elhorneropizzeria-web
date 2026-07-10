@@ -1,3 +1,5 @@
+"use client";
+
 import { MessageCircle, Flame } from "lucide-react";
 import { Aparecer } from "@/components/animaciones/aparecer";
 import { Button } from "@/components/ui/button";
@@ -25,15 +27,9 @@ export function CtaFinal() {
             </p>
             <div className="mt-8">
               <Button
-                render={
-                  <a
-                    href={enlaceWhatsApp()}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  />
-                }
                 size="lg"
                 className="h-14 px-10 text-lg"
+                onClick={() => window.open(enlaceWhatsApp(), '_blank', 'noopener,noreferrer')}
               >
                 <MessageCircle className="size-6" />
                 Pedir por WhatsApp

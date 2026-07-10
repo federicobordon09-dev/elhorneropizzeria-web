@@ -1,3 +1,5 @@
+"use client";
+
 import { MapPin, Clock, Navigation } from "lucide-react";
 import { Aparecer } from "@/components/animaciones/aparecer";
 import { EncabezadoSeccion } from "@/components/layout/encabezado-seccion";
@@ -85,15 +87,9 @@ export function Ubicacion() {
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <Button
-                render={
-                  <a
-                    href={negocio.direccion.googleMapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  />
-                }
                 size="lg"
                 className="resplandor-brasa h-12 flex-1"
+                onClick={() => window.open(negocio.direccion.googleMapsUrl, '_blank', 'noopener,noreferrer')}
               >
                 <Navigation className="size-5" />
                 Cómo llegar
