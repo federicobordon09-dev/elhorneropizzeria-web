@@ -14,11 +14,9 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
   const [escala, setEscala] = useState(1);
   const [posicion, setPosicion] = useState({ x: 0, y: 0 });
   const [arrastrando, setArrastrando] = useState(false);
-  const [origenZoom, setOrigenZoom] = useState({ x: 0.5, y: 0.5 });
   const ultimoPunto = useRef({ x: 0, y: 0 });
   const ultimaDistanciaPellizco = useRef(0);
   const seMovio = useRef(false);
-  const huboToque = useRef(false);
   const contenedorRef = useRef<HTMLDivElement>(null);
   const imagenRef = useRef<HTMLDivElement>(null);
 
@@ -33,24 +31,13 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
     seMovio.current = false;
   }, []);
 
-  const centrarZoomEn = useCallback((x: number, y: number) => {
-    const rect = imagenRef.current?.getBoundingClientRect();
-    if (rect) {
-      setOrigenZoom({
-        x: Math.max(0, Math.min(1, (x - rect.left) / rect.width)),
-        y: Math.max(0, Math.min(1, (y - rect.top) / rect.height)),
-      });
-    }
-  }, []);
-
-  const toggleZoom = useCallback((x: number, y: number) => {
+  const toggleZoom = useCallback(() => {
     if (escala === 1) {
-      centrarZoomEn(x, y);
-      setEscala(3);
+      setEscala(2);
     } else {
       reiniciarZoom();
     }
-  }, [escala, centrarZoomEn, reiniciarZoom]);
+  }, [escala, reiniciarZoom]);
 
   // ── Mouse ──
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
@@ -78,12 +65,12 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
 
   const handleDobleClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
-    toggleZoom(e.clientX, e.clientY);
+    toggleZoom();
   }, [toggleZoom]);
 
   // ── Touch ──
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    huboToque.current = true;
+    e.preventDefault();
     seMovio.current = false;
     if (e.touches.length === 2) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
@@ -97,7 +84,6 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (e.touches.length === 2) {
-      e.preventDefault();
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
       const distancia = Math.sqrt(dx * dx + dy * dy);
@@ -106,7 +92,6 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
         seMovio.current = true;
       }
     } else if (arrastrando && escala > 1 && e.touches.length === 1) {
-      e.preventDefault();
       const dx = e.touches[0].clientX - ultimoPunto.current.x;
       const dy = e.touches[0].clientY - ultimoPunto.current.y;
       if (Math.abs(dx) > 4 || Math.abs(dy) > 4) seMovio.current = true;
@@ -119,15 +104,14 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
     setArrastrando(false);
     ultimaDistanciaPellizco.current = 0;
     if (!seMovio.current && e.changedTouches.length === 1) {
-      const touch = e.changedTouches[0];
-      toggleZoom(touch.clientX, touch.clientY);
+      toggleZoom();
     }
   }, [toggleZoom]);
 
   const handleClick = useCallback((e: React.MouseEvent) => {
-    if (huboToque.current) { huboToque.current = false; return; }
+    e.stopPropagation();
     if (seMovio.current) { seMovio.current = false; return; }
-    toggleZoom(e.clientX, e.clientY);
+    toggleZoom();
   }, [toggleZoom]);
 
   // ── Render ──
@@ -167,11 +151,10 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
           cursor: escala > 1 ? (arrastrando ? "grabbing" : "grab") : "zoom-in",
         }}
       >
-        <div
-          className="relative h-[85dvh] w-[90vw] sm:h-[90vh] sm:w-[85vw]"
-          style={{
-            transform: `scale(${escala}) translate(${posicion.x / escala}px, ${posicion.y / escala}px)`,
-            transformOrigin: `${origenZoom.x * 100}% ${origenZoom.y * 100}%`,
+          <div
+            className="relative h-[85dvh] w-[90vw] sm:h-[90vh] sm:w-[85vw]"
+            style={{
+              transform: `scale(${escala}) translate(${posicion.x / escala}px, ${posicion.y / escala}px)`,
             transition: arrastrando ? "none" : "transform 0.25s cubic-bezier(0.22, 1, 0.36, 1)",
             willChange: "transform",
           }}
