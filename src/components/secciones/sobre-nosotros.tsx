@@ -47,7 +47,7 @@ export function SobreNosotros() {
             </p>
           </div>
 
-          <div className="mt-8 grid grid-cols-3 gap-4">
+          <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
             {[
               { valor: "100%", texto: "Artesanal", icono: Award },
               { valor: "Leña", texto: "Horno tradicional", icono: Flame },

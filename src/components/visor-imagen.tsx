@@ -18,6 +18,7 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
   const ultimoPunto = useRef({ x: 0, y: 0 });
   const ultimaDistanciaPellizco = useRef(0);
   const seMovio = useRef(false);
+  const huboToque = useRef(false);
   const contenedorRef = useRef<HTMLDivElement>(null);
   const imagenRef = useRef<HTMLDivElement>(null);
 
@@ -45,13 +46,13 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
   const toggleZoom = useCallback((x: number, y: number) => {
     if (escala === 1) {
       centrarZoomEn(x, y);
-      setEscala(2.5);
+      setEscala(3);
     } else {
       reiniciarZoom();
     }
   }, [escala, centrarZoomEn, reiniciarZoom]);
 
-  // ── Mouse ──────────────────────────────────────────
+  // ── Mouse ──
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     if (escala > 1) {
       e.preventDefault();
@@ -75,26 +76,22 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
     setArrastrando(false);
   }, []);
 
-  const handleClick = useCallback((e: React.MouseEvent) => {
-    if (seMovio.current) { seMovio.current = false; return; }
-    toggleZoom(e.clientX, e.clientY);
-  }, [toggleZoom]);
-
   const handleDobleClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     toggleZoom(e.clientX, e.clientY);
   }, [toggleZoom]);
 
-  // ── Touch ──────────────────────────────────────────
+  // ── Touch ──
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    huboToque.current = true;
     seMovio.current = false;
     if (e.touches.length === 2) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
       ultimaDistanciaPellizco.current = Math.sqrt(dx * dx + dy * dy);
-    } else if (e.touches.length === 1) {
+    } else if (e.touches.length === 1 && escala > 1) {
       ultimoPunto.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      if (escala > 1) setArrastrando(true);
+      setArrastrando(true);
     }
   }, [escala]);
 
@@ -104,12 +101,12 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
       const distancia = Math.sqrt(dx * dx + dy * dy);
-      if (ultimaDistanciaPellizco.current > 0 && distancia > 0) {
+      if (ultimaDistanciaPellizco.current > 0) {
         setEscala((s) => Math.max(1, Math.min(6, s * (distancia / ultimaDistanciaPellizco.current))));
         seMovio.current = true;
       }
-      ultimaDistanciaPellizco.current = distancia;
     } else if (arrastrando && escala > 1 && e.touches.length === 1) {
+      e.preventDefault();
       const dx = e.touches[0].clientX - ultimoPunto.current.x;
       const dy = e.touches[0].clientY - ultimoPunto.current.y;
       if (Math.abs(dx) > 4 || Math.abs(dy) > 4) seMovio.current = true;
@@ -125,17 +122,21 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
       const touch = e.changedTouches[0];
       toggleZoom(touch.clientX, touch.clientY);
     }
-    seMovio.current = false;
   }, [toggleZoom]);
 
-  // ── Render ─────────────────────────────────────────
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    if (huboToque.current) { huboToque.current = false; return; }
+    if (seMovio.current) { seMovio.current = false; return; }
+    toggleZoom(e.clientX, e.clientY);
+  }, [toggleZoom]);
+
+  // ── Render ──
   return (
     <div
       ref={contenedorRef}
       className="fixed inset-0 z-[100] flex touch-none select-none items-center justify-center bg-black/90 backdrop-blur-sm"
       onClick={(e) => { if (e.target === contenedorRef.current) onCerrar(); }}
     >
-      {/* Cerrar */}
       <button
         onClick={onCerrar}
         className="absolute right-4 top-4 z-20 flex size-10 items-center justify-center rounded-full bg-white/10 text-white/80 backdrop-blur transition-colors hover:bg-white/20 hover:text-white"
@@ -144,14 +145,12 @@ export function VisorImagen({ src, alt, onCerrar }: VisorImagenProps) {
         <X size={22} />
       </button>
 
-      {/* Texto guía */}
       <p className="pointer-events-none absolute bottom-6 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full bg-black/50 px-4 py-1.5 text-[11px] text-white/60 backdrop-blur">
         {escala > 1
           ? "Arrastrá para mover · Tocá para alejar"
           : "Tocá o pellizcá para acercar"}
       </p>
 
-      {/* Contenedor de la imagen con eventos */}
       <div
         ref={imagenRef}
         className="relative max-h-[92vh] max-w-[96vw] overflow-hidden"
