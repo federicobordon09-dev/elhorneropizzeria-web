@@ -34,7 +34,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/[0.06] px-4 py-1.5 text-xs font-medium text-crema ring-1 ring-inset ring-white/[0.09]"
+            className="mb-3 glass inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-crema"
           >
             <Clock className="size-3.5 text-ambar" />
             {negocio.horarios[0].horario}
