@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
-import { UtensilsCrossed, MapPin, Clock, ChevronDown } from "lucide-react";
+import { UtensilsCrossed, MapPin, Clock, ChevronDown, MoveRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { negocio } from "@/lib/datos-negocio";
+import { negocio, enlaceWhatsApp } from "@/lib/datos-negocio";
 import { imagenes } from "@/lib/contenido";
 
 export function Hero() {
@@ -34,10 +34,10 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="glass inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-medium text-crema"
+            className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/[0.06] px-4 py-1.5 text-xs font-medium text-crema ring-1 ring-inset ring-white/[0.09]"
           >
             <Clock className="size-3.5 text-ambar" />
-            Cocinado en horno de leña · Viernes a Domingo
+            {negocio.horarios[0].horario}
           </motion.span>
 
           <motion.h1
@@ -69,10 +69,25 @@ export function Hero() {
             <Button
               size="lg"
               className="resplandor-brasa h-12 w-full cursor-pointer px-7 text-base sm:w-auto"
-              onClick={() => document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() =>
+                window.open(
+                  enlaceWhatsApp("¡Hola El Hornero! Quiero hacer un pedido 🍕"),
+                  "_blank",
+                  "noopener,noreferrer"
+                )
+              }
             >
               <UtensilsCrossed className="size-5" />
-              Ver Menú
+              Pedí ahora
+            </Button>
+            <Button
+              size="lg"
+              variant="secondary"
+              className="h-12 w-full cursor-pointer px-7 text-base sm:w-auto"
+              onClick={() => document.getElementById("menu")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              <MoveRight className="size-5" />
+              Ver Carta
             </Button>
           </motion.div>
 
@@ -89,7 +104,7 @@ export function Hero() {
             </span>
             <span className="inline-flex items-center gap-2">
               <Clock className="size-4 text-primary" />
-              20:30 a 23:30
+              {negocio.horarios[0].horario}
             </span>
           </motion.div>
         </div>
@@ -113,11 +128,11 @@ export function Hero() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           </div>
 
-          <div className="glass-fuerte absolute -bottom-5 -left-4 rounded-2xl px-4 py-3">
+          <div className="glass-fuerte absolute -bottom-5 -left-4 rounded-2xl px-4 py-3 max-sm:hidden sm:block">
             <p className="fuente-titulo text-2xl font-bold text-crema">100%</p>
             <p className="text-xs text-muted-foreground">Artesanal</p>
           </div>
-          <div className="glass-fuerte absolute -right-4 top-10 rounded-2xl px-4 py-3 text-center">
+          <div className="glass-fuerte absolute -right-4 top-10 rounded-2xl px-4 py-3 text-center max-sm:hidden sm:block">
             <p className="fuente-titulo text-xl font-bold texto-acento">Leña</p>
             <p className="text-xs text-muted-foreground">Horno tradicional</p>
           </div>
