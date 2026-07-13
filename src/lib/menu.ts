@@ -2,25 +2,20 @@ export interface Pizza {
   nombre: string;
   descripcion: string;
   precio: number;
-  alcohol?: boolean;
-  categoria: "clasica" | "especial";
 }
 
 export const pizzas: Pizza[] = [
-  // Clásicas
-  { nombre: "Margherita", descripcion: "Mozzarella, albahaca fresca, salsa de tomate", precio: 13500, categoria: "clasica" },
-  { nombre: "Marinara", descripcion: "Salsa de tomate, ajo, orégano, aceite de oliva", precio: 12500, categoria: "clasica" },
-  { nombre: "Napolitana", descripcion: "Mozzarella, anchoas, aceitunas, alcaparras", precio: 14800, categoria: "clasica" },
-  { nombre: "Prosciutto", descripcion: "Mozzarella, jamón crudo, rúcula", precio: 15500, categoria: "clasica" },
-  { nombre: "Diavola", descripcion: "Mozzarella, salami picante, aceitunas negras", precio: 15200, categoria: "clasica" },
-  { nombre: "Caprese", descripcion: "Mozzarella fresca, tomate cherry, albahaca", precio: 14000, categoria: "clasica" },
-  // Especiales
-  { nombre: "Trufa", descripcion: "Mozzarella, crema de trufa, hongos, parmesano", precio: 17500, categoria: "especial" },
-  { nombre: "Burrata", descripcion: "Mozzarella, burrata, tomates confitados, pesto", precio: 18500, categoria: "especial" },
-  { nombre: "Carbonara", descripcion: "Mozzarella, crema, panceta, huevo, parmesano", precio: 16500, categoria: "especial" },
-  { nombre: "Cuatro Quesos", descripcion: "Mozzarella, gorgonzola, parmesano, provolone", precio: 17000, categoria: "especial" },
-  { nombre: "Calabresa", descripcion: "Mozzarella, longaniza, cebolla morada, chimichurri", precio: 16800, categoria: "especial" },
-  { nombre: "Rúcula & Jamón", descripcion: "Mozzarella, jamón crudo, rúcula, grana padano", precio: 18000, categoria: "especial" },
+  { nombre: "Margarita", descripcion: "Salsa, mozzarella, albahaca, orégano, aceite de oliva, rayado de sardo.", precio: 11000 },
+  { nombre: "Marinara", descripcion: "Salsa, ajo, orégano, aceite de oliva, albahaca. (No lleva queso)", precio: 9000 },
+  { nombre: "Marinara Tritata", descripcion: "Salsa, mozzarella, cantimpalo, desmenuzado, aceitunas rellenas, albahaca, orégano, aceite de oliva, rayado de sardo.", precio: 11000 },
+  { nombre: "Fugazzeta", descripcion: "Salsa, mozzarella, cebolla morada y blanca, albahaca, orégano, aceite de oliva, rayado de sardo.", precio: 12000 },
+  { nombre: "Napolitana", descripcion: "Salsa, mozzarella, tomate en rodajas, albahaca, orégano, aceite de oliva, rayado de sardo.", precio: 12000 },
+  { nombre: "Calabreza", descripcion: "Salsa, mozzarella, salame cantimpalo, albahaca, orégano, aceite de oliva, rayado de sardo.", precio: 12000 },
+  { nombre: "Especial", descripcion: "Salsa, mozzarella, jamón cocido, morrones, albahaca, orégano, aceite de oliva, rayado de sardo.", precio: 12000 },
+  { nombre: "Jamón y Rúcula", descripcion: "Salsa, mozzarella, jamón crudo, rúcula, albahaca, orégano, aceite de oliva, rayado de sardo.", precio: 13000 },
+  { nombre: "Cuatro Quesos", descripcion: "Salsa, mozzarella, roquefort, sardo, pategrás, albahaca, orégano, aceite de oliva, pesto de albahaca.", precio: 13000 },
+  { nombre: "De Pera Malbec", descripcion: "Salsa, pera, mozzarella, roquefort, reducción de Malbec, albahaca, aceite de oliva, rayado de sardo.", precio: 13000 },
+  { nombre: "Cherry", descripcion: "Salsa, mozzarella, tomatitos cherry, albahaca, aceite de oliva, rayado de sardo, pesto picante.", precio: 13000 },
 ];
 
 export function formatearPrecio(precio: number): string {
