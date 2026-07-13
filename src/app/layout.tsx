@@ -68,6 +68,11 @@ export const metadata: Metadata = {
     follow: true,
   },
   category: "restaurant",
+  icons: {
+    icon: "/logo_01.jpg",
+    shortcut: "/logo_01.jpg",
+    apple: "/logo_01.jpg",
+  },
 };
 
 export const viewport: Viewport = {
